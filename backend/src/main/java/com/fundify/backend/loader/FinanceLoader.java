@@ -1,7 +1,8 @@
-package com.fundify.backend;
+package com.fundify.backend.loader;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fundify.backend.entity.FinancialStatement;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

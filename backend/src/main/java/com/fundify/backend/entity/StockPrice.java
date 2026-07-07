@@ -1,4 +1,4 @@
-package com.fundify.backend;
+package com.fundify.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

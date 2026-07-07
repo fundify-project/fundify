@@ -1,4 +1,4 @@
-package com.fundify.backend;
+package com.fundify.backend.kis;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
