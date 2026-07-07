@@ -1,4 +1,4 @@
-package com.fundify.backend;
+package com.fundify.backend.kis;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,11 @@
-package com.fundify.backend;
+package com.fundify.backend.loader;
 
+import com.fundify.backend.repository.CompanyRepository;
+import com.fundify.backend.repository.FinancialStatementRepository;
+import com.fundify.backend.entity.Company;
+import com.fundify.backend.entity.FinancialStatement;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 // @Component

@@ -1,6 +1,9 @@
-package com.fundify.backend;
+package com.fundify.backend.kis;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fundify.backend.repository.StockPriceRepository;
+import com.fundify.backend.entity.StockPrice;
+import com.fundify.backend.loader.PriceLoader;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;

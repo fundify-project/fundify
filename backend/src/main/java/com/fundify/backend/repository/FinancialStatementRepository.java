@@ -1,5 +1,6 @@
-package com.fundify.backend;
+package com.fundify.backend.repository;
 
+import com.fundify.backend.entity.FinancialStatement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FinancialStatementRepository extends JpaRepository<FinancialStatement, Long> {
