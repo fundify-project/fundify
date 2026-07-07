@@ -1,3 +1,10 @@
+Markdown
+---
+name: "📋 Issue Template"
+about: fundify 프로젝트의 기본 이슈 양식입니다.
+title: "[타입]: 페이지 이름 - 상세 내용"
+labels: ""
+---
 ## 개요
 
 <!-- 어떤 작업을 하는 이슈인지 간단히 설명해주세요. -->
