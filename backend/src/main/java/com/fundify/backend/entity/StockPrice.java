@@ -20,6 +20,7 @@ public class StockPrice {
     private Long marketCap;        // 시가총액
     private Double per;            // PER (API 제공값)
     private Double pbr;            // PBR (API 제공값)
+    private Double changeRate;     // 등락률
 
     protected StockPrice() {
     }
@@ -34,7 +35,10 @@ public class StockPrice {
     public void setMarketCap(Long v) { this.marketCap = v; }
     public void setPer(Double v) { this.per = v; }
     public void setPbr(Double v) { this.pbr = v; }
+    public void setChangeRate(Double v) { this.changeRate = v; }
 
     public Long getId() { return id; }
     public String getStockCode() { return stockCode; }
+    public Long getClosePrice() { return closePrice; }
+    public Double getChangeRate() { return changeRate; }
 }
