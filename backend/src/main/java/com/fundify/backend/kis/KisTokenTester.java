@@ -8,7 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
-@Component
+// @Component
 public class KisTokenTester implements CommandLineRunner {
 
     private final KisTokenService kisTokenService;
