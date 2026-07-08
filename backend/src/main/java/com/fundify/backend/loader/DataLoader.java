@@ -1,10 +1,9 @@
 package com.fundify.backend.loader;
 
-import com.fundify.backend.repository.CompanyRepository;
-import com.fundify.backend.repository.FinancialStatementRepository;
 import com.fundify.backend.entity.Company;
-import com.fundify.backend.entity.FinancialStatement;
+import com.fundify.backend.repository.CompanyRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -12,45 +11,40 @@ import java.util.List;
 public class DataLoader implements CommandLineRunner {
 
     private final CompanyRepository companyRepository;
-    private final FinancialStatementRepository financialStatementRepository;
-    private final FinanceLoader financeLoader;
+    private final CompanyInfoLoader companyInfoLoader;
 
     public DataLoader(CompanyRepository companyRepository,
-                      FinancialStatementRepository financialStatementRepository,
-                      FinanceLoader financeLoader) {
+                      CompanyInfoLoader companyInfoLoader) {
         this.companyRepository = companyRepository;
-        this.financialStatementRepository = financialStatementRepository;
-        this.financeLoader = financeLoader;
+        this.companyInfoLoader = companyInfoLoader;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        int year = 2023;
-        int success = 0, fail = 0, skip = 0;
-
-        List<Company> targets = companyRepository.findAll();
-        int total = targets.size();
+        List<Company> companies = companyRepository.findAll();
+        int total = companies.size();
+        int success = 0, skip = 0, fail = 0;
 
         for (int i = 0; i < total; i++) {
-            Company company = targets.get(i);
-            String corpCode = company.getCorpCode();
+            Company company = companies.get(i);
 
-            if (financialStatementRepository.existsByCorpCodeAndFiscalYear(corpCode, year)) {
+            if (company.getMarket() != null) {
                 skip++;
                 continue;
             }
 
             try {
-                FinancialStatement fs = financeLoader.fetch(corpCode, year);  // ← 여기 바뀜
-                if (fs != null) {
-                    financialStatementRepository.save(fs);
+                String[] info = companyInfoLoader.fetchInfo(company.getCorpCode());
+                if (info != null) {
+                    company.setMarket(info[0]);
+                    company.setIndustryName(info[1]);
+                    companyRepository.save(company);
                     success++;
                 } else {
                     fail++;
                 }
             } catch (Exception e) {
                 fail++;
-                System.out.println(company.getCorpName() + " 실패: " + e.getMessage());
             }
 
             if ((i + 1) % 100 == 0) {
@@ -61,6 +55,6 @@ public class DataLoader implements CommandLineRunner {
             Thread.sleep(300);
         }
 
-        System.out.println("=== 전체 완료: 성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + " ===");
+        System.out.println("=== 기업개황 완료: 성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + " ===");
     }
 }

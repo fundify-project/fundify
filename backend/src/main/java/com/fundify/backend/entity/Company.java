@@ -40,4 +40,7 @@ public class Company {
     public String getCorpName() { return corpName; }
     public String getMarket() { return market; }
     public String getIndustryName() { return industryName; }
+    // market, industry 업데이트용
+    public void setMarket(String market) { this.market = market; }
+    public void setIndustryName(String industryName) { this.industryName = industryName; }
 }
