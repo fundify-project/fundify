@@ -41,4 +41,9 @@ public class StockPrice {
     public String getStockCode() { return stockCode; }
     public Long getClosePrice() { return closePrice; }
     public Double getChangeRate() { return changeRate; }
+
+    public Long getMarketCap() { return marketCap; }
+    public Long getVolume() { return volume; }
+    public Double getPer() { return per; }
+    public Double getPbr() { return pbr; }
 }

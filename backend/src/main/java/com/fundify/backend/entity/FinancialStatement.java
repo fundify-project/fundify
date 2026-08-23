@@ -49,4 +49,13 @@ public class FinancialStatement {
     public Long getId() { return id; }
     public String getCorpCode() { return corpCode; }
     public int getFiscalYear() { return fiscalYear; }
+
+    public Long getRevenue() { return revenue; }
+    public Long getOperatingProfit() { return operatingProfit; }
+    public Long getNetIncome() { return netIncome; }
+    public Long getTotalAssets() { return totalAssets; }
+    public Long getTotalLiabilities() { return totalLiabilities; }
+    public Long getTotalEquity() { return totalEquity; }
+    public Long getCurrentAssets() { return currentAssets; }
+    public Long getCurrentLiabilities() { return currentLiabilities; }
 }
