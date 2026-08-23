@@ -2,6 +2,7 @@ package com.fundify.backend.service;
 
 import com.fundify.backend.dto.CompanySearchItem;
 import com.fundify.backend.dto.CompanySearchResponse;
+import com.fundify.backend.dto.PopularItem;
 import com.fundify.backend.entity.Company;
 import com.fundify.backend.entity.StockPrice;
 import com.fundify.backend.repository.CompanyRepository;
@@ -29,17 +30,28 @@ public class CompanyService {
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Company> companyPage =
-                companyRepository.findByCorpNameContainingIgnoreCaseOrStockCodeContaining(
+                companyRepository.findByCorpNameContainingIgnoreCaseOrStockCodeContainingIgnoreCase(
                         keyword, keyword, pageable);
 
         List<CompanySearchItem> items = companyPage.getContent().stream()
                 .map(company -> {
-                    // 각 기업의 시세 찾아서 함께 넣기
                     StockPrice price = stockPriceRepository.findByStockCode(company.getStockCode());
                     return new CompanySearchItem(company, price);
                 })
                 .toList();
 
         return new CompanySearchResponse(items, companyPage.getTotalElements());
+    }
+
+    public List<PopularItem> getPopular() {
+        List<StockPrice> topPrices =
+                stockPriceRepository.findTop10ByMarketCapIsNotNullOrderByMarketCapDesc();
+
+        return topPrices.stream()
+                .map(price -> {
+                    Company company = companyRepository.findByStockCode(price.getStockCode());
+                    return new PopularItem(company, price);
+                })
+                .toList();
     }
 }
