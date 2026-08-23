@@ -1,9 +1,11 @@
 package com.fundify.backend.controller;
 
+import com.fundify.backend.dto.CompanyDetailResponse;
 import com.fundify.backend.dto.CompanySearchResponse;
 import com.fundify.backend.dto.PopularItem;
 import com.fundify.backend.service.CompanyService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,4 +34,13 @@ public class CompanyController {
     public List<PopularItem> getPopular() {
         return companyService.getPopular();
     }
+
+    // GET /companies/{stockCode}/detail?years=5
+    @GetMapping("/companies/{stockCode}/detail")
+    public CompanyDetailResponse getDetail(
+            @PathVariable String stockCode,
+            @RequestParam(defaultValue = "5") int years) {
+        return companyService.getDetail(stockCode, years);
+    }
+
 }
