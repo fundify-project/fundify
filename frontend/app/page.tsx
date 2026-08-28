@@ -3,7 +3,7 @@ import PopularStocks from "@/components/common/PopularStocks";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-ink px-6 py-24">
+    <main className="px-6 py-24">
       <div className="mx-auto max-w-xl text-center">
         <span className="inline-block rounded-full border border-mint/20 bg-mint/[0.08] px-3.5 py-1.5 text-xs font-medium uppercase tracking-widest text-mint">
           기업 분석 · 투자 인사이트
