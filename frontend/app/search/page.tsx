@@ -1,4 +1,4 @@
-import { CompanySearchResponse } from "@/types/company";
+import { searchCompanies } from "@/lib/api";
 
 interface SearchPageProps {
   searchParams: Promise<{ keyword?: string }>;
@@ -6,11 +6,7 @@ interface SearchPageProps {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { keyword } = await searchParams;
-
-  const res = await fetch(
-    `http://localhost:8080/companies/search?keyword=${keyword}`,
-  );
-  const data: CompanySearchResponse = await res.json();
+  const data = await searchCompanies(keyword ?? "");
 
   return (
     <div>
