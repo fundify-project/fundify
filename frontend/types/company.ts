@@ -19,6 +19,4 @@ export interface CompanySearchResponse {
 }
 
 // 인기종목 API 응답 
-export interface PopularStockResponse {
-  results: CompanySummary[];
-}
+export type PopularStockResponse = CompanySummary[];
