@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class FinanceLoader {
 
-    // application.properties의 dart.api-key 값을 자동으로 가져옴
     @Value("${dart.api-key}")
     private String apiKey;
 
@@ -39,21 +38,35 @@ public class FinanceLoader {
 
         JsonNode list = root.path("list");
         for (JsonNode item : list) {
+            String accountId = item.path("account_id").asText();
             String name = item.path("account_nm").asText();
+            String sjDiv = item.path("sj_div").asText();   // 재무제표 구분
             String amountText = item.path("thstrm_amount").asText();
             Long amount = parseAmount(amountText);
             if (amount == null) continue;
 
+            // 재무상태표(BS)의 자산·부채·자본만 잡기 (자본변동표 SCE 제외)
+            if (sjDiv.equals("BS")) {
+                switch (accountId) {
+                    case "ifrs-full_Assets"              -> fs.setTotalAssets(amount);
+                    case "ifrs-full_Liabilities"         -> fs.setTotalLiabilities(amount);
+                    case "ifrs-full_Equity"              -> fs.setTotalEquity(amount);
+                    case "ifrs-full_CurrentAssets"       -> fs.setCurrentAssets(amount);
+                    case "ifrs-full_CurrentLiabilities"  -> fs.setCurrentLiabilities(amount);
+                }
+            }
+
+            // 매출·손익 (손익계산서, 이름으로 매핑)
             switch (name) {
-                case "매출액", "수익(매출액)", "영업수익" -> fs.setRevenue(amount);
-                case "영업이익", "영업이익(손실)"        -> fs.setOperatingProfit(amount);
-                case "당기순이익", "당기순이익(손실)", "연결당기순이익"
-                        -> fs.setNetIncome(amount);
-                case "자산총계"   -> fs.setTotalAssets(amount);
-                case "부채총계"   -> fs.setTotalLiabilities(amount);
-                case "자본총계"   -> fs.setTotalEquity(amount);
-                case "유동자산"   -> fs.setCurrentAssets(amount);
-                case "유동부채"   -> fs.setCurrentLiabilities(amount);
+                case "매출액", "수익(매출액)", "영업수익" -> {
+                    if (fs.getRevenue() == null) fs.setRevenue(amount);
+                }
+                case "영업이익", "영업이익(손실)" -> {
+                    if (fs.getOperatingProfit() == null) fs.setOperatingProfit(amount);
+                }
+                case "당기순이익", "당기순이익(손실)", "연결당기순이익" -> {
+                    if (fs.getNetIncome() == null) fs.setNetIncome(amount);
+                }
             }
         }
         return fs;
