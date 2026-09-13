@@ -3,6 +3,7 @@ package com.fundify.backend.controller;
 import com.fundify.backend.dto.CompanyDetailResponse;
 import com.fundify.backend.dto.CompanySearchResponse;
 import com.fundify.backend.dto.PopularItem;
+import com.fundify.backend.dto.PriceResponse;
 import com.fundify.backend.service.CompanyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,12 @@ public class CompanyController {
             @PathVariable String stockCode,
             @RequestParam(defaultValue = "5") int years) {
         return companyService.getDetail(stockCode, years);
+    }
+
+    // GET /companies/{stockCode}/price
+    @GetMapping("/companies/{stockCode}/price")
+    public PriceResponse getPrice(@PathVariable String stockCode) {
+        return companyService.getPrice(stockCode);
     }
 
 }

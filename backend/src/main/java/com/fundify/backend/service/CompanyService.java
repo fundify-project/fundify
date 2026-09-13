@@ -1,12 +1,6 @@
 package com.fundify.backend.service;
 
-import com.fundify.backend.dto.CompanyDetailResponse;
-import com.fundify.backend.dto.CompanyInfo;
-import com.fundify.backend.dto.CompanySearchItem;
-import com.fundify.backend.dto.CompanySearchResponse;
-import com.fundify.backend.dto.FinancialItem;
-import com.fundify.backend.dto.MetricItem;
-import com.fundify.backend.dto.PopularItem;
+import com.fundify.backend.dto.*;
 import com.fundify.backend.entity.Company;
 import com.fundify.backend.entity.FinancialStatement;
 import com.fundify.backend.entity.StockPrice;
@@ -162,6 +156,14 @@ public class CompanyService {
         FinancialStatement fs = list.get(0);
         if (fs.getTotalLiabilities() == null || fs.getTotalEquity() == null || fs.getTotalEquity() <= 0) return null;
         return (double) fs.getTotalLiabilities() / fs.getTotalEquity() * 100;
+    }
+
+    public PriceResponse getPrice(String stockCode) {
+        StockPrice price = stockPriceRepository.findByStockCode(stockCode);
+        if (price == null) {
+            throw new IllegalArgumentException("존재하지 않는 종목: " + stockCode);
+        }
+        return new PriceResponse(price);
     }
 
     private Double round(double value) {
