@@ -13,4 +13,6 @@
   --color-fg: #EAF1FB;       /* 기본 텍스트 */
   --color-fg-2: #9FB0C8;     /* 보조 텍스트 */
   --color-fg-3: #61728C;     /* 흐린 텍스트 */
+   --color-up: #FF4D4F;    /* 상승 - 빨강 */
+  --color-down: #3B82F6;  /* 하락 - 파랑 */
 }
