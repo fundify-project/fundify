@@ -46,4 +46,5 @@ public class StockPrice {
     public Long getVolume() { return volume; }
     public Double getPer() { return per; }
     public Double getPbr() { return pbr; }
+    public LocalDate getTradeDate() { return tradeDate; }
 }
