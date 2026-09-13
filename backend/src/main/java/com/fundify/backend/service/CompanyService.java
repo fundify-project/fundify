@@ -34,8 +34,7 @@ public class CompanyService {
         Pageable pageable = PageRequest.of(page, size);
 
         Page<Company> companyPage =
-                companyRepository.findByCorpNameContainingIgnoreCaseOrStockCodeContainingIgnoreCase(
-                        keyword, keyword, pageable);
+                companyRepository.searchCompanies(keyword, pageable);
 
         List<CompanySearchItem> items = companyPage.getContent().stream()
                 .map(company -> {
