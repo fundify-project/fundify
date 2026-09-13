@@ -1,4 +1,4 @@
-//기업 요약 정보 
+//기업 요약 정보
 export interface CompanySummary {
   stockCode: string;
   corpName: string;
@@ -18,7 +18,7 @@ export interface CompanySearchResponse {
   totalCount: number;
 }
 
-// 인기종목 API 응답 
+// 인기종목 API 응답
 export type PopularStockResponse = CompanySummary[];
 
 // 기업 기본정보
@@ -70,4 +70,12 @@ export interface PricePoint {
 export interface PriceHistoryResponse {
   period: string;
   prices: PricePoint[];
+}
+
+export interface CurrentPrice {
+  stockCode: string;
+  currentPrice: number;
+  changeRate: number;
+  volume: number;
+  updatedAt: string;
 }

@@ -1,4 +1,8 @@
-import { CompanySearchResponse, PopularStockResponse } from "@/types/company";
+import {
+  CompanySearchResponse,
+  PopularStockResponse,
+  CurrentPrice,
+} from "@/types/company";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -24,13 +28,12 @@ import type {
   PriceHistoryResponse,
 } from "@/types/company";
 
-
 export async function getCompanyDetail(
   stockCode: string,
 ): Promise<CompanyDetailResponse> {
   const res = await fetch(`${BASE_URL}/companies/${stockCode}/detail`);
   if (!res.ok) throw new Error("기업 상세 조회 실패");
- return res.json();
+  return res.json();
 }
 
 export async function getPriceHistory(
@@ -44,4 +47,12 @@ export async function getPriceHistory(
     volume: 9000000 + i * 50000,
   }));
   return { period, prices };
+}
+
+export async function getCurrentPrice(
+  stockCode: string,
+): Promise<CurrentPrice> {
+  const res = await fetch(`${BASE_URL}/companies/${stockCode}/price`);
+  if (!res.ok) throw new Error("현재가 조회 실패");
+  return res.json();
 }
