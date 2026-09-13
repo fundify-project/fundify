@@ -1,15 +1,13 @@
 package com.fundify.backend.controller;
 
-import com.fundify.backend.dto.CompanyDetailResponse;
-import com.fundify.backend.dto.CompanySearchResponse;
-import com.fundify.backend.dto.PopularItem;
-import com.fundify.backend.dto.PriceResponse;
+import com.fundify.backend.dto.*;
 import com.fundify.backend.service.CompanyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -48,6 +46,14 @@ public class CompanyController {
     @GetMapping("/companies/{stockCode}/price")
     public PriceResponse getPrice(@PathVariable String stockCode) {
         return companyService.getPrice(stockCode);
+    }
+
+    // GET /companies/compare?stockCodes=005930,000660
+    @GetMapping("/companies/compare")
+    public List<CompareItem> compare(@RequestParam String stockCodes) {
+        // 콤마로 구분된 종목코드를 리스트로
+        List<String> codes = Arrays.asList(stockCodes.split(","));
+        return companyService.compare(codes);
     }
 
 }
