@@ -39,11 +39,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 </div>
                 <div
                   className={`text-xs font-medium ${
-                    (item.changeRate ?? 0) > 0 ? "text-mint" : "text-coral"
+                    (item.changeRate ?? 0) > 0
+                      ? "text-up"
+                      : (item.changeRate ?? 0) < 0
+                        ? "text-down"
+                        : "text-fg-3"
                   }`}
                 >
-                  {(item.changeRate ?? 0) > 0 ? "▲" : "▼"}{" "}
-                  {Math.abs(item.changeRate ?? 0)}%
+                  {(item.changeRate ?? 0) > 0
+                    ? "▲"
+                    : (item.changeRate ?? 0) < 0
+                      ? "▼"
+                      : ""}{" "}
+                  {(item.changeRate ?? 0) > 0 ? "+" : ""}
+                  {item.changeRate ?? 0}%
                 </div>
               </div>
             </Link>

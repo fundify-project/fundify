@@ -36,11 +36,16 @@ export default async function PopularStocks() {
                 </span>
                 <span
                   className={`block text-xs font-medium ${
-                    stock.changeRate > 0 ? "text-mint" : "text-coral"
+                    stock.changeRate > 0
+                      ? "text-up"
+                      : stock.changeRate < 0
+                        ? "text-down"
+                        : "text-fg-3"
                   }`}
                 >
-                  {stock.changeRate > 0 ? "▲" : "▼"}{" "}
-                  {Math.abs(stock.changeRate)}%
+                  {stock.changeRate > 0 ? "▲" : stock.changeRate < 0 ? "▼" : ""}{" "}
+                  {stock.changeRate > 0 ? "+" : ""}
+                  {stock.changeRate}%
                 </span>
               </span>
             </Link>
