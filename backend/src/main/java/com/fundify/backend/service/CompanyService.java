@@ -168,4 +168,34 @@ public class CompanyService {
     private Double round(double value) {
         return Math.round(value * 100) / 100.0;
     }
+
+    public List<CompareItem> compare(List<String> stockCodes) {
+        // 최대 3개 제한
+        if (stockCodes.size() > 3) {
+            throw new IllegalArgumentException("최대 3개까지 비교 가능합니다.");
+        }
+
+        List<CompareItem> result = new ArrayList<>();
+        for (String stockCode : stockCodes) {
+            Company company = companyRepository.findByStockCode(stockCode);
+            if (company == null) continue;  // 없는 종목은 건너뛰기
+
+            StockPrice price = stockPriceRepository.findByStockCode(stockCode);
+            Double per = (price != null) ? price.getPer() : null;
+            Double pbr = (price != null) ? price.getPbr() : null;
+
+            Double roe = calcRoe(company.getCorpCode());
+            Double debtRatio = calcDebtRatio(company.getCorpCode());
+
+            result.add(new CompareItem(
+                    stockCode,
+                    company.getCorpName(),
+                    per,
+                    pbr,
+                    roe != null ? round(roe) : null,
+                    debtRatio != null ? round(debtRatio) : null
+            ));
+        }
+        return result;
+    }
 }
