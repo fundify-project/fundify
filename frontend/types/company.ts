@@ -56,14 +56,8 @@ export interface Metric {
 // 상세 API 응답
 export interface CompanyDetailResponse {
   info: CompanyInfo;
-  financials: {
-    fsDiv: string;
-    statements: FinancialStatement[];
-  };
-  metrics: {
-    baseDate: string;
-    items: Metric[];
-  };
+  financials: FinancialStatement[]; // 배열로
+  metrics: Metric[];
 }
 
 // 시세 차트

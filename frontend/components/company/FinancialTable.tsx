@@ -9,14 +9,20 @@ export default function FinancialTable({ statements }: FinancialTableProps) {
     { label: "매출액", key: "revenue" as const },
     { label: "영업이익", key: "operatingProfit" as const },
     { label: "당기순이익", key: "netIncome" as const },
-    { label: "자산총계", key: "totalAssets" as const },
-    { label: "부채총계", key: "totalLiabilities" as const },
   ];
+
+  if (statements.length === 0) {
+    return (
+      <div className="rounded-2xl border border-line bg-ink-2 px-6 py-8 text-center text-sm text-fg-3">
+        재무제표 데이터가 없습니다
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl border border-line bg-ink-2 px-6 py-5">
       <div className="mb-4 text-xs tracking-wide text-fg-3">
-        재무제표 · 최근 5개년 (단위: 조원)
+        재무제표 (단위: 조원)
       </div>
 
       <table className="w-full">
@@ -38,7 +44,7 @@ export default function FinancialTable({ statements }: FinancialTableProps) {
 
         <tbody>
           {rows.map((row) => (
-            <tr key={row.key} className="border-b border-line/50 last:border-0">
+            <tr key={row.key} className="border-b border-line/50">
               <td className="py-2.5 text-sm text-fg-2">{row.label}</td>
               {statements.map((s) => (
                 <td
@@ -58,7 +64,7 @@ export default function FinancialTable({ statements }: FinancialTableProps) {
                 key={s.fiscalYear}
                 className="py-2.5 text-right text-sm font-medium text-fg"
               >
-                {s.debtRatio}%
+                {s.debtRatio.toFixed(1)}%
               </td>
             ))}
           </tr>
@@ -68,7 +74,6 @@ export default function FinancialTable({ statements }: FinancialTableProps) {
   );
 }
 
-// 258935494000000 → "258.9"
 function toJo(value: number) {
   return (value / 1_0000_0000_0000).toFixed(1);
 }

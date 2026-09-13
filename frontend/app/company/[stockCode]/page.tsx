@@ -17,8 +17,8 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
       <div className="mx-auto flex max-w-4xl flex-col gap-4">
         <CompanyHeader info={data.info} />
         <PriceChart stockCode={stockCode} />
-        <MetricCards metrics={data.metrics.items} />
-        <FinancialTable statements={data.financials.statements} />
+        <MetricCards metrics={data.metrics ?? []} />
+        <FinancialTable statements={data.financials ?? []} />
       </div>
     </main>
   );
