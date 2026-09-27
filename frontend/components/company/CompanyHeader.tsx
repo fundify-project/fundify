@@ -1,3 +1,4 @@
+import CompareButton from "@/components/company/CompareButton";
 import type { CompanyInfo, CurrentPrice } from "@/types/company";
 
 interface CompanyHeaderProps {
@@ -8,46 +9,52 @@ interface CompanyHeaderProps {
 export default function CompanyHeader({ info, price }: CompanyHeaderProps) {
   const isUp = price.changeRate > 0;
   const isDown = price.changeRate < 0;
+  const priceColor = isUp ? "text-up" : isDown ? "text-down" : "text-fg";
 
   return (
-    <div className="flex items-start gap-5 rounded-2xl bg-ink-2 px-7 py-6">
-      <div className="flex h-14 w-14 flex-none items-center justify-center rounded-xl bg-ink-3 text-xl font-bold text-mint">
-        {info.corpName.charAt(0)}
-      </div>
-
-      <div>
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-semibold tracking-tight text-fg">
+    <div className="rounded-2xl bg-ink-2 px-6 py-6 sm:px-7 sm:py-7">
+      <div className="flex items-start">
+        <div className="min-w-0">
+          {/* 기업명 */}
+          <h1 className="text-xl font-bold tracking-tight text-fg sm:text-2xl">
             {info.corpName}
-          </span>
-          <span className="text-sm text-fg-3">{info.stockCode}</span>
-        </div>
-        <div className="mt-1.5 text-sm text-fg-2">
-          {info.market} · {info.industry} · 시가총액{" "}
-          {formatMarketCap(info.marketCap)}
-        </div>
-      </div>
+          </h1>
 
-      {/* 현재가 영역 추가 */}
-      <div className="ml-auto text-right">
-        <div className="text-2xl font-bold tracking-tight text-fg">
-          {price.currentPrice.toLocaleString()}
-          <span className="ml-1 text-base font-normal text-fg-3">원</span>
+          {/* 가격 */}
+          <div
+            className={`mt-3 text-3xl font-bold tracking-tight sm:text-4xl ${priceColor}`}
+          >
+            {price.currentPrice.toLocaleString()}
+            <span className="text-2xl sm:text-3xl">원</span>
+          </div>
+
+          {/* 등락률 */}
+          <div
+            className={`mt-1.5 text-base font-semibold sm:text-lg ${priceColor}`}
+          >
+            {isUp ? "▲" : isDown ? "▼" : ""} {isUp ? "+" : ""}
+            {price.changeRate}%
+          </div>
+
+          {/* 부가 정보 */}
+          <div className="mt-4 text-sm text-fg-2">
+            {info.stockCode} · {info.market} · 시가총액{" "}
+            {formatMarketCap(info.marketCap)}
+          </div>
+
+          {/* 기준일 */}
+          <div className="mt-1 text-xs text-fg-3">{price.updatedAt} 기준</div>
         </div>
-        <div
-          className={`mt-1 text-sm font-medium ${
-            isUp ? "text-up" : isDown ? "text-down" : "text-fg-3"
-          }`}
-        >
-          {isUp ? "▲" : isDown ? "▼" : ""} {isUp ? "+" : ""}
-          {price.changeRate}%
+
+        {/* 비교 버튼 */}
+        <div className="ml-auto flex-none">
+          <CompareButton stockCode={info.stockCode} />
         </div>
       </div>
     </div>
   );
 }
 
-// 억원 단위로 들어옴
 function formatMarketCap(value: number) {
   if (value >= 10000) {
     return `${Math.round(value / 10000).toLocaleString()}조`;
