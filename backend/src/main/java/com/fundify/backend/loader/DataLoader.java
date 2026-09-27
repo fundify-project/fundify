@@ -26,40 +26,46 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        int[] years = {2021, 2022, 2024, 2025};  // 2023은 이미 있음
         List<Company> companies = companyRepository.findAll();
-        int total = companies.size();
-        int success = 0, skip = 0, fail = 0;
 
-        for (int i = 0; i < total; i++) {
-            Company company = companies.get(i);
-            String corpCode = company.getCorpCode();
+        for (int year : years) {
+            int success = 0, skip = 0, fail = 0;
+            int total = companies.size();
 
-            // 이미 있으면 건너뛰기 (재수집 시엔 DELETE 후 돌리므로 다 새로 받음)
-            if (financialStatementRepository.existsByCorpCodeAndFiscalYear(corpCode, 2023)) {
-                skip++;
-                continue;
-            }
+            for (int i = 0; i < total; i++) {
+                Company company = companies.get(i);
+                String corpCode = company.getCorpCode();
 
-            try {
-                FinancialStatement fs = financeLoader.fetch(corpCode, 2023);
-                if (fs != null && fs.getRevenue() != null) {
-                    financialStatementRepository.save(fs);
-                    success++;
-                } else {
+                // 이미 그 연도 있으면 건너뛰기
+                if (financialStatementRepository.existsByCorpCodeAndFiscalYear(corpCode, year)) {
+                    skip++;
+                    continue;
+                }
+
+                try {
+                    FinancialStatement fs = financeLoader.fetch(corpCode, year);
+                    if (fs != null && fs.getRevenue() != null) {
+                        financialStatementRepository.save(fs);
+                        success++;
+                    } else {
+                        fail++;
+                    }
+                } catch (Exception e) {
                     fail++;
                 }
-            } catch (Exception e) {
-                fail++;
+
+                if ((i + 1) % 200 == 0) {
+                    System.out.println(year + "년 진행: " + (i + 1) + "/" + total
+                            + " (성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + ")");
+                }
+
+                Thread.sleep(300);
             }
 
-            if ((i + 1) % 100 == 0) {
-                System.out.println("진행: " + (i + 1) + "/" + total
-                        + " (성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + ")");
-            }
-
-            Thread.sleep(300);
+            System.out.println("=== " + year + "년 완료: 성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + " ===");
         }
 
-        System.out.println("=== 재무 재수집 완료: 성공 " + success + " / 실패 " + fail + " / 건너뜀 " + skip + " ===");
+        System.out.println("=== 5개년 재무 수집 전체 완료 ===");
     }
 }
