@@ -1,6 +1,7 @@
 package com.fundify.backend.controller;
 
 import com.fundify.backend.dto.*;
+import com.fundify.backend.service.ChartService;
 import com.fundify.backend.service.CompanyService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +15,11 @@ import java.util.List;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final ChartService chartService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyService companyService, ChartService chartService) {
         this.companyService = companyService;
+        this.chartService = chartService;
     }
 
     // GET /companies/search?keyword=삼성&page=0&size=20
@@ -54,6 +57,14 @@ public class CompanyController {
         // 콤마로 구분된 종목코드를 리스트로
         List<String> codes = Arrays.asList(stockCodes.split(","));
         return companyService.compare(codes);
+    }
+
+    // GET /companies/{stockCode}/prices?period=1M
+    @GetMapping("/companies/{stockCode}/prices")
+    public ChartResponse getChart(
+            @PathVariable String stockCode,
+            @RequestParam(defaultValue = "1M") String period) {
+        return chartService.getChart(stockCode, period);
     }
 
 }
