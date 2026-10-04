@@ -32,7 +32,6 @@ public class ChartService {
             String token = kisTokenService.getAccessToken();
 
             if (period.equals("6M")) {
-                // 6개월은 100건 제한 때문에 두 구간으로 나눠서 호출
                 String end1 = today.format(fmt);
                 String start1 = today.minusMonths(3).format(fmt);
                 addPrices(prices, stockCode, start1, end1, token);
@@ -61,7 +60,11 @@ public class ChartService {
                            String start, String end, String token) throws Exception {
         JsonNode chart = priceLoader.fetchDailyChart(stockCode, start, end, token);
         for (JsonNode day : chart) {
-            String date = day.path("stck_bsop_date").asText();
+            String rawDate = day.path("stck_bsop_date").asText();   // "20261004"
+            if (rawDate.length() != 8) continue;   // 날짜 형식 이상하면 건너뛰기
+            String date = rawDate.substring(0, 4) + "-"
+                    + rawDate.substring(4, 6) + "-"
+                    + rawDate.substring(6, 8);                   // "2026-10-04"
             Long close = parseLong(day.path("stck_clpr").asText());
             Long volume = parseLong(day.path("acml_vol").asText());
             prices.add(new ChartItem(date, close, volume));
