@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useCompareStore } from "@/store/useCompareStore";
 import { getCompanyDetail } from "@/lib/api";
-import CompareTable from "@/components/compare/CompareTable";
+import CompareTable from "@/components/Compare/CompareTable";
 import SearchModal from "@/components/common/SearchModal";
 import type { CompanyDetailResponse } from "@/types/company";
 
@@ -25,7 +25,9 @@ export default function ComparePage() {
 
     Promise.all(stockCodes.map((code) => getCompanyDetail(code)))
       .then((results) => {
-        if (!cancelled) setCompanies(results);
+        if (!cancelled) setCompanies(
+          results.filter((r): r is CompanyDetailResponse => r !== null),
+        );
       })
       .catch((err) => console.error("비교 데이터 조회 실패:", err));
 
