@@ -16,7 +16,7 @@ export default function Header() {
         <nav className="ml-auto flex items-center gap-2">
           <Link
             href="/compare"
-            className="rounded-lg px-3 py-2 text-sm text-fg-2 transition hover:bg-ink-3 hover:text-fg"
+            className="rounded-lg px-3 py-2 text-sm text-fg-2 transition hover:bg-mint hover:text-fg"
           >
             기업 비교
             {count > 0 && (
@@ -24,12 +24,6 @@ export default function Header() {
                 {count}
               </span>
             )}
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-lg border border-line px-3 py-2 text-sm text-fg transition hover:bg-ink-3"
-          >
-            로그인
           </Link>
         </nav>
       </div>

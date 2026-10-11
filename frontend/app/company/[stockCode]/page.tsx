@@ -3,6 +3,7 @@ import CompanyHeader from "@/components/company/CompanyHeader";
 import PriceChart from "@/components/company/PriceChart";
 import MetricCards from "@/components/company/MetricCards";
 import FinancialTable from "@/components/company/FinancialTable";
+import { notFound } from "next/navigation";
 
 interface CompanyPageProps {
   params: Promise<{ stockCode: string }>;
@@ -11,10 +12,10 @@ interface CompanyPageProps {
 export default async function CompanyPage({ params }: CompanyPageProps) {
   const { stockCode } = await params;
 
-  const [data, price] = await Promise.all([
-    getCompanyDetail(stockCode),
-    getCurrentPrice(stockCode),
-  ]);
+  const data = await getCompanyDetail(stockCode);
+  if (!data) notFound();
+
+  const price = await getCurrentPrice(stockCode);
 
   return (
     <main className="px-6 py-10">
