@@ -16,6 +16,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
   if (!data) notFound();
 
   const price = await getCurrentPrice(stockCode);
+  if (!price) notFound();
 
   return (
     <main className="px-6 py-10">

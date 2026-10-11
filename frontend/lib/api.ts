@@ -1,7 +1,9 @@
-import {
+import type {
   CompanySearchResponse,
   PopularStockResponse,
+  CompanyDetailResponse,
   CurrentPrice,
+  PriceHistoryResponse,
 } from "@/types/company";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
@@ -10,47 +12,66 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 export async function searchCompanies(
   keyword: string,
 ): Promise<CompanySearchResponse> {
-  const res = await fetch(
-    `${BASE_URL}/companies/search?keyword=${encodeURIComponent(keyword)}&size=50`,
-  );
-  if (!res.ok) throw new Error("기업 검색 실패");
-  return res.json();
+  try {
+    const res = await fetch(
+      `${BASE_URL}/companies/search?keyword=${encodeURIComponent(keyword)}`,
+    );
+    if (!res.ok) return { results: [], totalCount: 0 };
+    return res.json();
+  } catch {
+    return { results: [], totalCount: 0 };
+  }
 }
 
+// 인기 종목
 export async function getPopularStocks(): Promise<PopularStockResponse> {
-  const res = await fetch(`${BASE_URL}/companies/popular`);
-  if (!res.ok) throw new Error("인기 종목 조회 실패");
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/companies/popular`);
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
-import type {
-  CompanyDetailResponse,
-  PriceHistoryResponse,
-} from "@/types/company";
-
+// 기업 상세
 export async function getCompanyDetail(
   stockCode: string,
 ): Promise<CompanyDetailResponse | null> {
-  const res = await fetch(`${BASE_URL}/companies/${stockCode}/detail`);
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}/companies/${stockCode}/detail`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
 }
 
-export async function getPriceHistory(
-  stockCode: string,
-  period = "1M"
-): Promise<PriceHistoryResponse> {
-  const res = await fetch(
-    `${BASE_URL}/companies/${stockCode}/prices?period=${period}`
-  );
-  if (!res.ok) throw new Error("시세 조회 실패");
-  return res.json();
-}
-
+// 현재가
 export async function getCurrentPrice(
   stockCode: string,
-): Promise<CurrentPrice> {
-  const res = await fetch(`${BASE_URL}/companies/${stockCode}/price`);
-  if (!res.ok) throw new Error("현재가 조회 실패");
-  return res.json();
+): Promise<CurrentPrice | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/companies/${stockCode}/price`);
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+// 시세 차트
+export async function getPriceHistory(
+  stockCode: string,
+  period = "1M",
+): Promise<PriceHistoryResponse> {
+  try {
+    const res = await fetch(
+      `${BASE_URL}/companies/${stockCode}/prices?period=${period}`,
+    );
+    if (!res.ok) return { period, prices: [] };
+    return res.json();
+  } catch {
+    return { period, prices: [] };
+  }
 }
