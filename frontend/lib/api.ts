@@ -4,7 +4,7 @@ import {
   CurrentPrice,
 } from "@/types/company";
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
 
 // 기업 검색
 export async function searchCompanies(
