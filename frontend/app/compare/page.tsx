@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useCompareStore } from "@/store/useCompareStore";
 import { getCompanyDetail } from "@/lib/api";
-import CompareTable from "@/components/Compare/CompareTable";
+import CompareTable from "@/components/compare/CompareTable";
 import SearchModal from "@/components/common/SearchModal";
 import type { CompanyDetailResponse } from "@/types/company";
 
