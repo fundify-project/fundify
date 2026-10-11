@@ -1,0 +1,33 @@
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-pretendard), system-ui, sans-serif;
+  --color-ink: #0E1726;      /* 배경 */
+  --color-ink-2: #152036;    /* 카드 */
+  --color-ink-3: #1D2C47;    /* hover */
+  --color-line: #26324B;     /* 테두리 */
+  --color-mint: #3DD6A6;     /* 포인트 / 상승 */
+  --color-mint-dim: #1c8f6d; /* 포커스 테두리 */
+  --color-coral: #FF6B6B;    /* 하락 */
+  --color-fg: #EAF1FB;       /* 기본 텍스트 */
+  --color-fg-2: #9FB0C8;     /* 보조 텍스트 */
+  --color-fg-3: #61728C;     /* 흐린 텍스트 */
+   --color-up: #FF4D4F;    /* 상승 - 빨강 */
+  --color-down: #3B82F6;  /* 하락 - 파랑 */
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}

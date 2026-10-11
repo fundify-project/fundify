@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 키/민감정보 ###
+application.properties
+
+### DB 데이터 ###
+/data/
+
+### DART 원본 ###
+CORPCODE.xml
