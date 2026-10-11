@@ -1,17 +1,31 @@
 package com.fundify.backend.loader;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fundify.backend.entity.Company;
+import com.fundify.backend.entity.StockPrice;
 import com.fundify.backend.kis.KisTokenService;
+import com.fundify.backend.repository.CompanyRepository;
+import com.fundify.backend.repository.StockPriceRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
 
 // @Component
 public class DataLoader implements CommandLineRunner {
 
+    private final CompanyRepository companyRepository;
+    private final StockPriceRepository stockPriceRepository;
     private final KisTokenService kisTokenService;
     private final PriceLoader priceLoader;
 
-    public DataLoader(KisTokenService kisTokenService, PriceLoader priceLoader) {
+    public DataLoader(CompanyRepository companyRepository,
+                      StockPriceRepository stockPriceRepository,
+                      KisTokenService kisTokenService,
+                      PriceLoader priceLoader) {
+        this.companyRepository = companyRepository;
+        this.stockPriceRepository = stockPriceRepository;
         this.kisTokenService = kisTokenService;
         this.priceLoader = priceLoader;
     }
@@ -19,17 +33,58 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         String token = kisTokenService.getAccessToken();
+        List<Company> companies = companyRepository.findAll();
+        int total = companies.size();
+        int success = 0, skip = 0, fail = 0;
 
-        // 삼성전자 1개월치 테스트 (20260904 ~ 20261004)
-        JsonNode chart = priceLoader.fetchDailyChart("005930", "20260904", "20261004", token);
+        for (int i = 0; i < total; i++) {
+            Company company = companies.get(i);
+            String stockCode = company.getStockCode();
 
-        System.out.println("=== 삼성전자 일봉 (" + chart.size() + "건) ===");
-        for (JsonNode day : chart) {
-            System.out.println(
-                    day.path("stck_bsop_date").asText() + " / " +  // 영업일자
-                            "종가:" + day.path("stck_clpr").asText() + " / " +  // 종가
-                            "거래량:" + day.path("acml_vol").asText()           // 거래량
-            );
+            if (stockPriceRepository.existsByStockCode(stockCode)) {
+                skip++;
+                continue;
+            }
+
+            try {
+                JsonNode output = priceLoader.fetchPrice(stockCode, token);
+                if (output != null && output.has("stck_prpr")) {
+                    StockPrice sp = new StockPrice(stockCode, LocalDate.now());
+                    sp.setClosePrice(parseLong(output.path("stck_prpr").asText()));
+                    sp.setVolume(parseLong(output.path("acml_vol").asText()));
+                    sp.setMarketCap(parseLong(output.path("hts_avls").asText()));
+                    sp.setPer(parseDouble(output.path("per").asText()));
+                    sp.setPbr(parseDouble(output.path("pbr").asText()));
+                    sp.setChangeRate(parseDouble(output.path("prdy_ctrt").asText()));
+                    stockPriceRepository.save(sp);
+                    success++;
+                } else {
+                    fail++;
+                }
+            } catch (Exception e) {
+                fail++;
+            }
+
+            if ((i + 1) % 100 == 0) {
+                System.out.println("진행: " + (i + 1) + "/" + total
+                        + " (성공 " + success + " / 실패 " + fail + ")");
+            }
+
+            Thread.sleep(300);
         }
+
+        System.out.println("=== 시세 수집 완료: 성공 " + success + " / 실패 " + fail + " ===");
+    }
+
+    static Long parseLong(String text) {
+        if (text == null || text.isBlank()) return null;
+        try { return Long.parseLong(text.replace(",", "").trim()); }
+        catch (NumberFormatException e) { return null; }
+    }
+
+    static Double parseDouble(String text) {
+        if (text == null || text.isBlank()) return null;
+        try { return Double.parseDouble(text.replace(",", "").trim()); }
+        catch (NumberFormatException e) { return null; }
     }
 }
