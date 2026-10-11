@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import SearchBar from "@/components/common/SearchBar";
 import PopularStocks from "@/components/common/PopularStocks";
 
