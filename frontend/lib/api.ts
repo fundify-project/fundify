@@ -6,7 +6,10 @@ import type {
   PriceHistoryResponse,
 } from "@/types/company";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080";
+const BASE_URL =
+  typeof window === "undefined"
+    ? process.env.API_URL
+    : "/api";
 
 // 기업 검색
 export async function searchCompanies(
