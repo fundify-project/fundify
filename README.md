@@ -81,7 +81,7 @@
 - 카드 클릭 시 해당 기업 상세 페이지로 이동
 - 검색 결과가 없을 경우 안내 메시지 표시
 
-<img width="1176" height="890" alt="search" src="https://github.com/user-attachments/assets/ae303ed2-aba3-4f28-9fa2-ebb6d479d372" />
+<img width="1176" height="890" alt="Image" src="https://github.com/user-attachments/assets/b4f671d4-1fc1-4957-aec5-11e770f0b0ed" />
 
 
 ### 기업 상세 페이지
@@ -92,7 +92,7 @@
 - "비교 담기" 클릭 시 전역 상태에 저장되고 헤더의 비교 개수 배지 증가
 - 존재하지 않는 종목코드로 접근 시 404 페이지 노출
 
-<img width="1104" height="890" alt="Image" src="https://github.com/user-attachments/assets/5bd1b983-dd66-4265-bfcc-c93e7d9c2b69" />
+<img width="1104" height="890" alt="Image" src="https://github.com/user-attachments/assets/5e2e2611-0069-4941-9053-4a832113de83" />
 
 
 ### 기업 비교 페이지
@@ -101,7 +101,7 @@
 - 항목별로 더 우수한 값을 민트 색상으로 강조 (PER·PBR·부채비율은 낮을수록, ROE·재무 항목은 높을수록 우위)
 - 담긴 기업이 없을 경우 빈 상태 안내 표시
 
-<img width="1050" height="888" alt="Image" src="https://github.com/user-attachments/assets/76e9656a-2e31-4f80-95e7-570e66f153a9" />
+<img width="1050" height="888" alt="Image" src="https://github.com/user-attachments/assets/c1072213-53d3-4493-9481-a13abb951891" />
 
 
 ---
