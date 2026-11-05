@@ -73,7 +73,7 @@
 - 등락률은 상승 빨강 / 하락 파랑으로 표시 (국내 증시 표기 관례)
 
 
-<img width="1422" height="894" alt="main" src="https://github.com/user-attachments/assets/97f68d7e-6917-4b2f-a218-6eb5f6daeaf7" />
+<img width="1422" height="894" alt="Image" src="https://github.com/user-attachments/assets/ba06a529-d202-4b85-8f0c-4db1125e9d81" />
 
 ### 검색 결과 페이지
 - 현재 검색어와 검색 결과 건수 표시
