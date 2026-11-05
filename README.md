@@ -72,8 +72,8 @@
 - 검색창에 기업명·종목코드 입력 후 Enter 또는 "검색" 클릭 시 검색 결과 페이지로 이동
 - 등락률은 상승 빨강 / 하락 파랑으로 표시 (국내 증시 표기 관례)
 
-<img width="1176" height="890" alt="Image" src="https://github.com/user-attachments/assets/ae303ed2-aba3-4f28-9fa2-ebb6d479d372" />
 
+<img width="1422" height="894" alt="main" src="https://github.com/user-attachments/assets/97f68d7e-6917-4b2f-a218-6eb5f6daeaf7" />
 
 ### 검색 결과 페이지
 - 현재 검색어와 검색 결과 건수 표시
@@ -81,7 +81,7 @@
 - 카드 클릭 시 해당 기업 상세 페이지로 이동
 - 검색 결과가 없을 경우 안내 메시지 표시
 
-<img width="1422" height="894" alt="Image" src="https://github.com/user-attachments/assets/97f68d7e-6917-4b2f-a218-6eb5f6daeaf7" />
+<img width="1176" height="890" alt="search" src="https://github.com/user-attachments/assets/ae303ed2-aba3-4f28-9fa2-ebb6d479d372" />
 
 
 ### 기업 상세 페이지
